@@ -4,20 +4,28 @@ import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.mapper.TransactionMapper;
+import com.example.ExpenseTracker.services.CsvExportService;
 import com.example.ExpenseTracker.services.TransactionService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
     private final TransactionService transactionServices;
+    private final TransactionMapper transactionMapper;
+    private final CsvExportService csvExportService;
 
-    public TransactionController(TransactionService transactionServices) {
+    public TransactionController(TransactionService transactionServices, TransactionMapper transactionMapper, CsvExportService csvExportService) {
         this.transactionServices = transactionServices;
+        this.transactionMapper = transactionMapper;
+        this.csvExportService = csvExportService;
     }
 
     @GetMapping("/user/{userId}")
@@ -71,4 +79,16 @@ public class TransactionController {
                 .body(csv.toString());
     }
 
+    @GetMapping("/export/csv")
+    public void exportToCsv(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=transactions.csv");
+
+        List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions()
+                .stream()
+                .map(transactionMapper::toResponseDTO)
+                .toList();
+
+        csvExportService.writeTransactionToCsv(transactions, response.getWriter());
+    }
 }

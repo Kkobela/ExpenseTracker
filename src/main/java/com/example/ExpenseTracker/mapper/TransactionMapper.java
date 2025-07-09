@@ -17,6 +17,19 @@ public class TransactionMapper {
         this.userRepository = userRepository;
     }
 
+    public TransactionResponseDTO toResponseDTO(Transaction entity) {
+        return new TransactionResponseDTO(
+                entity.getId(),
+                entity.getDescription(),
+                entity.getAmount(),
+                entity.getType(),
+                entity.getDate(),
+                entity.getCategory() != null ? entity.getCategory().getId() : null,
+                entity.getUser() != null ? entity.getUser().getId() : null
+        );
+    }
+
+
     public Transaction toEntity(TransactionRequestDTO dto) {
         Transaction t = new Transaction();
         t.setDescription(dto.getDescription());
