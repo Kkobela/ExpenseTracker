@@ -5,30 +5,14 @@ import com.example.ExpenseTracker.dto.TransactionResponseDTO;
 import com.example.ExpenseTracker.model.Transaction;
 import com.example.ExpenseTracker.repository.CategoryRepository;
 import com.example.ExpenseTracker.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class TransactionMapper {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-
-    public TransactionMapper(CategoryRepository categoryRepository, UserRepository userRepository) {
-        this.categoryRepository = categoryRepository;
-        this.userRepository = userRepository;
-    }
-
-    public TransactionResponseDTO toResponseDTO(Transaction entity) {
-        return new TransactionResponseDTO(
-                entity.getId(),
-                entity.getDescription(),
-                entity.getAmount(),
-                entity.getType(),
-                entity.getDate(),
-                entity.getCategory() != null ? entity.getCategory().getId() : null,
-                entity.getUser() != null ? entity.getUser().getId() : null
-        );
-    }
-
 
     public Transaction toEntity(TransactionRequestDTO dto) {
         Transaction t = new Transaction();

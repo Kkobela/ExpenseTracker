@@ -84,10 +84,7 @@ public class TransactionController {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=transactions.csv");
 
-        List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions()
-                .stream()
-                .map(transactionMapper::toResponseDTO)
-                .toList();
+        List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions();
 
         csvExportService.writeTransactionToCsv(transactions, response.getWriter());
     }
