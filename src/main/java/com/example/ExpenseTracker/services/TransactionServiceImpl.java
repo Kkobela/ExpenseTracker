@@ -4,6 +4,7 @@ import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.mapper.TransactionMapper;
 import com.example.ExpenseTracker.model.Category;
 import com.example.ExpenseTracker.model.Transaction;
 import com.example.ExpenseTracker.model.TransactionType;
@@ -25,6 +26,7 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
+    private final TransactionMapper transactionMapper;
 
     @Override
     public TransactionResponseDTO createTransaction(TransactionRequestDTO requestDTO) {
@@ -111,5 +113,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         return summaries;
+    }
+
+    @Override
+    public List<TransactionResponseDTO> getAllTransactions() {
+        return transactionRepository.findAll()
+                .stream()
+                .map(transactionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

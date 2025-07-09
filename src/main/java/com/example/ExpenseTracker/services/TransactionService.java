@@ -13,4 +13,5 @@ public interface TransactionService {
     void deleteTransaction(Long id);
     MonthlySummaryDTO getMonthlySummary(int month, int year);
     List<CategorySummaryDTO> getCategorySummary(int month, int year);
+    List<TransactionResponseDTO> getAllTransactions();
 }

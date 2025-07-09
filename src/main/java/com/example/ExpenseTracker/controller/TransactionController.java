@@ -5,6 +5,8 @@ import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
 import com.example.ExpenseTracker.services.TransactionService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,4 +48,27 @@ public class TransactionController {
             @RequestParam int month) {
         return transactionServices.getCategorySummary(month, year);
     }
+
+    @GetMapping(value = "/export/csv", produces = "text/csv")
+    public ResponseEntity<String> exportTransactionsToCsv() {
+        List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions();
+
+        StringBuilder csv = new StringBuilder();
+        csv.append("id,description,amount,type,date,categoryId,userId\n");
+
+        for (TransactionResponseDTO dto : transactions) {
+            csv.append(dto.getId()).append(",")
+                    .append(dto.getDescription()).append(",")
+                    .append(dto.getAmount()).append(",")
+                    .append(dto.getType()).append(",")
+                    .append(dto.getDate()).append(",")
+                    .append(dto.getCategoryId()).append(",")
+                    .append(dto.getUserId()).append("\n");
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=transactions.csv")
+                .body(csv.toString());
+    }
+
 }
