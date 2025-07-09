@@ -4,6 +4,7 @@ import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.services.ChartServices;
 import com.example.ExpenseTracker.services.CsvExportService;
 import com.example.ExpenseTracker.services.PdfExportService;
 import com.example.ExpenseTracker.services.TransactionService;
@@ -21,11 +22,13 @@ public class TransactionController {
     private final TransactionService transactionServices;
     private final CsvExportService csvExportService;
     private final PdfExportService pdfExportService;
+    private final ChartServices chartServices;
 
-    public TransactionController(TransactionService transactionServices, CsvExportService csvExportService, PdfExportService pdfExportService) {
+    public TransactionController(TransactionService transactionServices, CsvExportService csvExportService, PdfExportService pdfExportService, ChartServices chartServices) {
         this.transactionServices = transactionServices;
         this.csvExportService = csvExportService;
         this.pdfExportService = pdfExportService;
+        this.chartServices = chartServices;
     }
 
     @GetMapping("/user/{userId}")
@@ -96,5 +99,18 @@ public class TransactionController {
 
         List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions();
         pdfExportService.writeTransactionsToPdf(transactions, response.getOutputStream());
+    }
+
+    @GetMapping("/report/categories/chart")
+    public void getCategorySummaryChart(
+            @RequestParam int month,
+            @RequestParam int year,
+            HttpServletResponse response) throws Exception {
+
+        response.setContentType("image/png");
+        response.setHeader("Content-Disposition", "inline; filename=category-summary.png");
+
+        List<CategorySummaryDTO> summary = transactionServices.getCategorySummary(month, year);
+        chartServices.generateCategorySummaryPieChart(summary, response.getOutputStream());
     }
 }
