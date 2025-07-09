@@ -1,9 +1,11 @@
 package com.example.ExpenseTracker.services;
 
+import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
 import com.example.ExpenseTracker.model.Category;
 import com.example.ExpenseTracker.model.Transaction;
+import com.example.ExpenseTracker.model.TransactionType;
 import com.example.ExpenseTracker.model.User;
 import com.example.ExpenseTracker.repository.CategoryRepository;
 import com.example.ExpenseTracker.repository.TransactionRepository;
@@ -11,6 +13,7 @@ import com.example.ExpenseTracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,4 +75,25 @@ public class TransactionServiceImpl implements TransactionService {
 
         return dto;
     }
+
+    public MonthlySummaryDTO getMonthlySummary(int month, int year) {
+        List<Object[]> results = transactionRepository.getMonthlyTotals(month, year);
+
+        BigDecimal totalExpense = BigDecimal.ZERO;
+        BigDecimal totalIncome = BigDecimal.ZERO;
+
+        for (Object[] row : results) {
+            TransactionType type = (TransactionType) row[0];
+            BigDecimal sum = (BigDecimal) row[1];
+
+            if (type == TransactionType.EXPENSE) {
+                totalExpense = sum;
+            } else if (type == TransactionType.INCOME) {
+                totalIncome = sum;
+            }
+        }
+
+        return new MonthlySummaryDTO(year, month, totalExpense, totalIncome);
+    }
+
 }

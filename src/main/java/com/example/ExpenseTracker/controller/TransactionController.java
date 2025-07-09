@@ -1,5 +1,6 @@
 package com.example.ExpenseTracker.controller;
 
+import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
 import com.example.ExpenseTracker.services.TransactionService;
@@ -30,4 +31,12 @@ public class TransactionController {
     public void delete(@PathVariable Long id){
         transactionServices.deleteTransaction(id);
     }
+
+    @GetMapping("/summary")
+    public MonthlySummaryDTO getMonthlySummary(
+            @RequestParam int year,
+            @RequestParam int month) {
+        return transactionServices.getMonthlySummary(month, year);
+    }
+
 }
