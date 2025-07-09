@@ -1,5 +1,6 @@
 package com.example.ExpenseTracker.services;
 
+import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
@@ -11,4 +12,5 @@ public interface TransactionService {
     List<TransactionResponseDTO> getTransactionsByUser(Long userId);
     void deleteTransaction(Long id);
     MonthlySummaryDTO getMonthlySummary(int month, int year);
+    List<CategorySummaryDTO> getCategorySummary(int month, int year);
 }

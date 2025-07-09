@@ -1,5 +1,6 @@
 package com.example.ExpenseTracker.services;
 
+import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,4 +98,18 @@ public class TransactionServiceImpl implements TransactionService {
         return new MonthlySummaryDTO(year, month, totalExpense, totalIncome);
     }
 
+    public List<CategorySummaryDTO> getCategorySummary(int month, int year) {
+        List<Object[]> results = transactionRepository.getCategoryTotals(month, year);
+        List<CategorySummaryDTO> summaries = new ArrayList<>();
+
+        for (Object[] row : results) {
+            Long categoryId = (Long) row[0];
+            String categoryName = (String) row[1];
+            BigDecimal total = (BigDecimal) row[2];
+
+            summaries.add(new CategorySummaryDTO(categoryId, categoryName, total));
+        }
+
+        return summaries;
+    }
 }

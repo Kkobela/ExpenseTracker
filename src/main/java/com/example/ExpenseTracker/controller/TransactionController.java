@@ -1,5 +1,6 @@
 package com.example.ExpenseTracker.controller;
 
+import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
@@ -39,4 +40,10 @@ public class TransactionController {
         return transactionServices.getMonthlySummary(month, year);
     }
 
+    @GetMapping("/summary/categories")
+    public List<CategorySummaryDTO> getCategorySummary(
+            @RequestParam int year,
+            @RequestParam int month) {
+        return transactionServices.getCategorySummary(month, year);
+    }
 }
