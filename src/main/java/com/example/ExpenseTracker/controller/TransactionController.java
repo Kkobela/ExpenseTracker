@@ -4,8 +4,8 @@ import com.example.ExpenseTracker.dto.CategorySummaryDTO;
 import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
 import com.example.ExpenseTracker.dto.TransactionRequestDTO;
 import com.example.ExpenseTracker.dto.TransactionResponseDTO;
-import com.example.ExpenseTracker.mapper.TransactionMapper;
 import com.example.ExpenseTracker.services.CsvExportService;
+import com.example.ExpenseTracker.services.PdfExportService;
 import com.example.ExpenseTracker.services.TransactionService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
@@ -19,13 +19,13 @@ import java.util.List;
 @RequestMapping("/api/transaction")
 public class TransactionController {
     private final TransactionService transactionServices;
-    private final TransactionMapper transactionMapper;
     private final CsvExportService csvExportService;
+    private final PdfExportService pdfExportService;
 
-    public TransactionController(TransactionService transactionServices, TransactionMapper transactionMapper, CsvExportService csvExportService) {
+    public TransactionController(TransactionService transactionServices, CsvExportService csvExportService, PdfExportService pdfExportService) {
         this.transactionServices = transactionServices;
-        this.transactionMapper = transactionMapper;
         this.csvExportService = csvExportService;
+        this.pdfExportService = pdfExportService;
     }
 
     @GetMapping("/user/{userId}")
@@ -87,5 +87,14 @@ public class TransactionController {
         List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions();
 
         csvExportService.writeTransactionToCsv(transactions, response.getWriter());
+    }
+
+    @GetMapping("/export/pdf")
+    public void exportToPdf(HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=transactions.pdf");
+
+        List<TransactionResponseDTO> transactions = transactionServices.getAllTransactions();
+        pdfExportService.writeTransactionsToPdf(transactions, response.getOutputStream());
     }
 }
