@@ -1,4 +1,4 @@
-package com.example.ExpenseTracker.dto;
+package com.example.ExpenseTracker.transactiondto;
 
 import com.example.ExpenseTracker.model.Transaction;
 import com.example.ExpenseTracker.model.TransactionType;

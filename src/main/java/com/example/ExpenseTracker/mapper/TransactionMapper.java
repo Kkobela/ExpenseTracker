@@ -1,7 +1,7 @@
 package com.example.ExpenseTracker.mapper;
 
-import com.example.ExpenseTracker.dto.TransactionRequestDTO;
-import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.transactiondto.TransactionRequestDTO;
+import com.example.ExpenseTracker.transactiondto.TransactionResponseDTO;
 import com.example.ExpenseTracker.model.Transaction;
 import com.example.ExpenseTracker.repository.CategoryRepository;
 import com.example.ExpenseTracker.repository.UserRepository;

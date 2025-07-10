@@ -1,9 +1,9 @@
 package com.example.ExpenseTracker.controller;
 
-import com.example.ExpenseTracker.dto.CategorySummaryDTO;
-import com.example.ExpenseTracker.dto.MonthlySummaryDTO;
-import com.example.ExpenseTracker.dto.TransactionRequestDTO;
-import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.transactiondto.CategorySummaryDTO;
+import com.example.ExpenseTracker.transactiondto.MonthlySummaryDTO;
+import com.example.ExpenseTracker.transactiondto.TransactionRequestDTO;
+import com.example.ExpenseTracker.transactiondto.TransactionResponseDTO;
 import com.example.ExpenseTracker.services.ChartServices;
 import com.example.ExpenseTracker.services.CsvExportService;
 import com.example.ExpenseTracker.services.PdfExportService;

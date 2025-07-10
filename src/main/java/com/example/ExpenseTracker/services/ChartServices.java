@@ -1,6 +1,6 @@
 package com.example.ExpenseTracker.services;
 
-import com.example.ExpenseTracker.dto.CategorySummaryDTO;
+import com.example.ExpenseTracker.transactiondto.CategorySummaryDTO;
 import org.knowm.xchart.BitmapEncoder;
 import org.knowm.xchart.PieChart;
 import org.knowm.xchart.PieChartBuilder;

@@ -1,6 +1,6 @@
 package com.example.ExpenseTracker.services;
 
-import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.transactiondto.TransactionResponseDTO;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;

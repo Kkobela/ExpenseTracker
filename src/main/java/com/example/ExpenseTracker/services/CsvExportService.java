@@ -1,6 +1,6 @@
 package com.example.ExpenseTracker.services;
 
-import com.example.ExpenseTracker.dto.TransactionResponseDTO;
+import com.example.ExpenseTracker.transactiondto.TransactionResponseDTO;
 import com.opencsv.CSVWriter;
 import org.springframework.stereotype.Service;
 
